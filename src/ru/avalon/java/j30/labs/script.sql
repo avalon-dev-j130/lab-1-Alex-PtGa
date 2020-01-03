@@ -43,10 +43,16 @@ insert into userinfo(nam, surname) values('Djose', 'Paptis');
 insert into userinfo(nam, surname) values('Djose', 'Paptis');
 insert into userinfo(nam, surname) values('Alex', 'Kvastos');
 
-
+--//**//**
+-- REFERENCES - внешний ключ задаётся для столбца подчиненной таблицы.
+--             Автоматически выполняется проверка на существование равного значения первичного ключа главной таблицы.
+--             При определении могут быть дополнительно определены правила обеспечения ссылочной целостности
+--            (ON DELETE RESTRICT, ON DELETE CASADE, ON DELETE SET NULL, ON DELETE SET DEFAULT).
+--             По умолчанию принят запрет на удаления строк при наличии ссылок на них (ON DELETE RESTRICT).
+--//**//**
  create table "user"
  (
- id INTEGER unique GENERATED always as identity,
+ id INTEGER UNIQUE GENERATED always as identity,
 
  email varchar(255) primary key,
  pasword varchar(255) not null,
@@ -63,8 +69,11 @@ insert into "user"(email, pasword, info) values('flows_tf@mail.com', 'FDS4539@')
 insert into "user"(email, pasword, info, "role") values('flows_gl@mail.com', 'maklain', 1, 1);
 insert into "user"(email, pasword, info, "role") values('flows_bk@mail.com', 'ojdi', 2, 2);
 
+--//**//**
+-- заказ, слово зарезервировано, в "___"
+--//**//**
 
- create table "order"            -- заказ, слово зарезервировано, в "___"
+ create table "order"            
  (
  id INTEGER GENERATED always as identity unique,
     
@@ -72,17 +81,24 @@ insert into "user"(email, pasword, info, "role") values('flows_bk@mail.com', 'oj
  created timestamp default current_timestamp,
     
  constraint fk_user foreign key ("user")    
- references "user"(id)                     -- 
+ references "user"(id)                     
  );
 
 insert into "order"("user") values(4);
 insert into "order"("user") values(5);
 insert into "order"("user") values(6);
 
+-- //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
+-- PRIMARY KEY - ограничение первичного ключа, при этом накладывается автоматически NOT NULL. 
+--    При задании первичного ключа любое значение проверяется на уникальность и при обнаруживании дубликата операция прерывается
+--    В таблице может быть только один столбецс ограничением PRIMARY KEY 
+-- UNIQUE - ограничение уникальности, NOT NULL накладывается автоматически, фактически ни чем не отличается от PRIMARY KEY 
+--         количество столбцов не ограничено
+-- //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 create table product  (
-id INTEGER unique GENERATED always as identity,
-code varchar(255) primary key,                   -- первичный ключ
+id INTEGER UNIQUE GENERATED always as identity,  
+code varchar(255) primary key,                   
 title varchar(255),
 supplier integer,
 
